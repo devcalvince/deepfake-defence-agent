@@ -1,0 +1,275 @@
+Project Structure
+MIF-Deepfake-Attribution/
+│
+├── README.md
+├── requirements.txt
+├── docker-compose.yml
+├── .env
+│
+├── docs/
+│   ├── proposal/
+│   ├── diagrams/
+│   ├── methodology/
+│   └── reports/
+│
+├── datasets/
+│   ├── authentic/
+│   ├── deepfake/
+│   ├── audio/
+│   └── metadata/
+│
+├── models/
+│   ├── visual_detection/
+│   ├── audio_detection/
+│   ├── ppg_detection/
+│   └── model_fingerprinting/
+│
+├── api/
+│   ├── main.py
+│   ├── routes/
+│   │   ├── authentication.py
+│   │   ├── detection.py
+│   │   ├── attribution.py
+│   │   └── alerts.py
+│   │
+│   └── schemas/
+│       ├── request.py
+│       └── response.py
+│
+├── agents/
+│   │
+│   ├── visual_agent/
+│   │   ├── detector.py
+│   │   └── feature_extractor.py
+│   │
+│   ├── audio_agent/
+│   │   ├── voice_clone_detector.py
+│   │   └── audio_visual_sync.py
+│   │
+│   ├── biometric_agent/
+│   │   ├── ppg_detector.py
+│   │   ├── blink_analysis.py
+│   │   └── facial_motion.py
+│   │
+│   ├── semantic_agent/
+│   │   ├── scene_analysis.py
+│   │   ├── weather_checker.py
+│   │   └── contextual_validation.py
+│   │
+│   ├── forensic_agent/
+│   │   ├── metadata_analysis.py
+│   │   ├── source_tracing.py
+│   │   └── model_fingerprint.py
+│   │
+│   ├── blockchain_agent/
+│   │   ├── hash_generator.py
+│   │   ├── verification.py
+│   │   └── ledger_connector.py
+│   │
+│   └── consensus_agent/
+│       ├── decision_engine.py
+│       ├── risk_scoring.py
+│       └── confidence_fusion.py
+│
+├── services/
+│   ├── preprocessing/
+│   │   ├── video_processor.py
+│   │   ├── audio_processor.py
+│   │   └── frame_extractor.py
+│   │
+│   ├── alerting/
+│   │   ├── email_alert.py
+│   │   ├── sms_alert.py
+│   │   └── dashboard_alert.py
+│   │
+│   └── encryption/
+│       ├── aes256.py
+│       └── key_management.py
+│
+├── database/
+│   ├── models.py
+│   ├── connection.py
+│   └── migrations/
+│
+├── logs/
+│   ├── detections/
+│   ├── alerts/
+│   └── audits/
+│
+├── dashboard/
+│   ├── frontend/
+│   │   ├── pages/
+│   │   ├── components/
+│   │   └── charts/
+│   │
+│   └── backend/
+│
+├── evaluation/
+│   ├── accuracy_tests.py
+│   ├── latency_tests.py
+│   ├── robustness_tests.py
+│   └── benchmarking.py
+│
+└── tests/
+    ├── unit/
+    ├── integration/
+    └── security/
+Core Agents of MIF
+1. Visual Agent
+
+Responsible for:
+
+facial artifact detection
+frame inconsistencies
+GAN-generated texture detection
+lighting analysis
+2. Audio Agent
+
+Responsible for:
+
+voice cloning detection
+speech pattern analysis
+lip-sync verification
+audio-visual consistency
+3. Biometric Agent
+
+Responsible for:
+
+blink detection
+head movement analysis
+micro-expression analysis
+photoplethysmography (PPG) extraction
+4. Semantic Agent
+
+Responsible for:
+
+contextual verification
+environmental consistency
+location validation
+weather and scene checks
+
+Example:
+
+Video claims to be recorded in Nairobi but shows snow.
+
+Flag as suspicious.
+
+5. Forensic Agent
+
+Responsible for:
+
+metadata extraction
+model fingerprinting
+source attribution
+attack trace generation
+
+This is what makes your project different from ordinary deepfake detectors.
+
+6. Blockchain Agent
+
+Responsible for:
+
+generating media hashes
+integrity verification
+provenance tracking
+chain-of-custody validation
+7. Consensus Agent
+
+This is your innovation.
+
+Instead of one detector making a decision:
+
+Visual Agent      92%
+Audio Agent       85%
+Biometric Agent   97%
+Semantic Agent    78%
+Forensic Agent    90%
+
+The Consensus Agent combines them:
+
+Overall Risk Score = 94%
+
+Decision:
+DEEPFAKE DETECTED
+
+This eliminates the single point of failure problem.
+
+Technology Stack
+Backend
+Python 3.10+
+FastAPI
+PyTorch
+OpenCV
+MediaPipe
+Database
+PostgreSQL
+Security
+AES-256 Encryption
+JWT Authentication
+Multi-Factor Authentication
+Containerization
+Docker
+Docker Compose
+Cloud
+Google Colab (training)
+Local Laptop (deployment/demo)
+Frontend
+Streamlit (easier)
+or
+React (advanced)
+
+┌──────────────────────────────────────────────────────┐
+│ LAYER 1: CORE FRAMEWORK & COMMUNICATION              │
+└──────────────────────────────────────────────────────┘
+
+• Environment Setup
+• PostgreSQL Database
+• FastAPI Microservices
+• API Schemas
+• Logging Framework
+• Agent Communication Bus
+
+
+            ↓
+
+
+┌──────────────────────────────────────────────────────┐
+│ LAYER 2: DETECTION & INTELLIGENCE AGENTS             │
+└──────────────────────────────────────────────────────┘
+
+• Visual Agent
+• Biometric Agent
+• Audio Agent
+• Forensic Agent
+
+            ↓
+
+• Consensus Agent
+   (Fusion + Weighted Scoring Engine)
+
+
+            ↓
+
+
+┌──────────────────────────────────────────────────────┐
+│ LAYER 3: TRUST, ATTRIBUTION & SECURITY               │
+└──────────────────────────────────────────────────────┘
+
+• Blockchain Verification Agent
+• Source Attribution Engine
+• Metadata Analysis
+• Hash Verification
+
+
+            ↓
+
+
+┌──────────────────────────────────────────────────────┐
+│ LAYER 4: PRESENTATION & EVALUATION                   │
+└──────────────────────────────────────────────────────┘
+
+• Dashboard
+• Dataset Integration
+• Metrics Engine
+• Report Generation
+• Chapter 4 Graphs
