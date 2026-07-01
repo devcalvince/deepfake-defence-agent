@@ -10,25 +10,78 @@ from sqlalchemy import (
     DateTime,
     JSON,
     Boolean,
-    Text
+    Text,
+    ForeignKey
 )
 
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
 
-class ForensicDetectionLog(Base):
-    """
-    Core forensic intelligence ledger.
+# ==========================================================
+# USER MODEL
+# ==========================================================
 
-    Stores:
-    - Multi-agent telemetry
-    - Deepfake detection results
-    - Forensic attribution findings
-    - Blockchain verification records
-    - Security audit information
+class User(Base):
     """
+    System users (Forensic Analysts / Administrators)
+    """
+
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    username = Column(
+        String(100),
+        unique=True,
+        nullable=False,
+        index=True
+    )
+
+    hashed_password = Column(
+        String(255),
+        nullable=False
+    )
+
+    full_name = Column(
+        String(150),
+        nullable=True
+    )
+
+    email = Column(
+        String(150),
+        unique=True,
+        nullable=True
+    )
+
+    role = Column(
+        String(30),
+        default="ANALYST"
+    )
+
+    is_active = Column(
+        Boolean,
+        default=True,
+        nullable=False
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.datetime.utcnow
+    )
+
+    investigations = relationship(
+        "ForensicDetectionLog",
+        back_populates="analyst"
+    )
+
+
+# ==========================================================
+# FORENSIC DETECTION LOG
+# ==========================================================
+
+class ForensicDetectionLog(Base):
 
     __tablename__ = "forensic_detection_logs"
 
@@ -45,6 +98,17 @@ class ForensicDetectionLog(Base):
         index=True
     )
 
+    analyst_id = Column(
+        Integer,
+        ForeignKey("users.id"),
+        nullable=True
+    )
+
+    analyst = relationship(
+        "User",
+        back_populates="investigations"
+    )
+
     timestamp = Column(
         DateTime,
         default=datetime.datetime.utcnow,
@@ -59,18 +123,28 @@ class ForensicDetectionLog(Base):
     )
 
     # ==================================================
-    # MEDIA FINGERPRINTING
+    # MEDIA INFORMATION
     # ==================================================
 
-    media_sha256 = Column(
-        String(64),
-        nullable=False,
-        index=True
+    original_filename = Column(
+        String(255),
+        nullable=True
+    )
+
+    media_type = Column(
+        String(30),
+        nullable=True
     )
 
     evidence_path = Column(
         String(255),
         nullable=True
+    )
+
+    media_sha256 = Column(
+        String(64),
+        nullable=False,
+        index=True
     )
 
     # ==================================================
@@ -79,60 +153,71 @@ class ForensicDetectionLog(Base):
 
     visual_score = Column(
         Float,
-        nullable=False,
-        default=0.0
+        default=0.0,
+        nullable=False
     )
 
     biometric_score = Column(
         Float,
-        nullable=False,
-        default=0.0
+        default=0.0,
+        nullable=False
     )
 
     audio_score = Column(
         Float,
-        nullable=False,
-        default=0.0
+        default=0.0,
+        nullable=False
     )
 
     forensic_score = Column(
         Float,
-        nullable=False,
-        default=0.0
+        default=0.0,
+        nullable=False
     )
 
     semantic_score = Column(
         Float,
-        nullable=False,
-        default=0.0
+        default=0.0,
+        nullable=False
     )
 
     # ==================================================
-    # CONSENSUS ENGINE OUTPUT
+    # CONSENSUS ENGINE
     # ==================================================
 
     global_risk_score = Column(
         Float,
+        default=0.0,
         nullable=False
     )
 
     detection_confidence = Column(
         Float,
+        default=0.0,
         nullable=False
     )
 
     final_verdict = Column(
         String(30),
+        default="PROCESSING",
+        nullable=False,
+        index=True
+    )
+
+    processing_status = Column(
+        String(30),
+        default="PENDING",
         nullable=False,
         index=True
     )
 
     # ==================================================
-    # RAW AGENT TELEMETRY
+    # RAW AGENT OUTPUTS
     # ==================================================
 
     raw_agent_telemetry = Column(
         JSON,
+        default=dict,
         nullable=False
     )
 
@@ -141,35 +226,33 @@ class ForensicDetectionLog(Base):
     # ==================================================
 
     inferred_generator_source = Column(
-        String(150),
-        nullable=True
+        String(150)
     )
 
     suspected_ai_model = Column(
-        String(150),
-        nullable=True
+        String(150)
     )
 
     metadata_tamper_detected = Column(
         Boolean,
-        nullable=False,
-        default=False
+        default=False,
+        nullable=False
     )
 
     semantic_anomaly_detected = Column(
         Boolean,
-        nullable=False,
-        default=False
+        default=False,
+        nullable=False
     )
 
     # ==================================================
-    # REAL-TIME ALERTING
+    # ALERTING
     # ==================================================
 
     alert_generated = Column(
         Boolean,
-        nullable=False,
-        default=False
+        default=False,
+        nullable=False
     )
 
     alert_timestamp = Column(
@@ -178,42 +261,39 @@ class ForensicDetectionLog(Base):
     )
 
     # ==================================================
-    # BLOCKCHAIN VERIFICATION
+    # BLOCKCHAIN
     # ==================================================
 
     blockchain_tx_hash = Column(
-        String(100),
-        nullable=True
+        String(100)
     )
 
     blockchain_block_number = Column(
-        String(50),
-        nullable=True
+        String(50)
     )
 
     ledger_is_anchored = Column(
         Boolean,
-        nullable=False,
-        default=False
+        default=False,
+        nullable=False
     )
 
     # ==================================================
-    # SECURITY CONTROLS
+    # SECURITY
     # ==================================================
 
     is_encrypted = Column(
         Boolean,
-        nullable=False,
-        default=True
+        default=True,
+        nullable=False
     )
 
     # ==================================================
-    # OPTIONAL INVESTIGATION NOTES
+    # ANALYST NOTES
     # ==================================================
 
     analyst_notes = Column(
-        Text,
-        nullable=True
+        Text
     )
 
     # ==================================================
@@ -222,8 +302,8 @@ class ForensicDetectionLog(Base):
 
     record_status = Column(
         String(30),
-        nullable=False,
-        default="ACTIVE"
+        default="ACTIVE",
+        nullable=False
     )
 
     created_at = Column(
